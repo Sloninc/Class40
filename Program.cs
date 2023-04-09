@@ -35,6 +35,7 @@ namespace Class40
     {
         public static IEnumerable<int> Top(this IEnumerable<int> source, int percentoflist)
         {
+            if (source == null) throw new ArgumentNullException("source");
             var _orderedsource=source.OrderByDescending(x => x);
             int _count = source.Count();
             int _index = -1;
@@ -43,26 +44,29 @@ namespace Class40
             {
                 _index++;
                 if (element < 0 || element > 100)
-                    throw new ArgumentException();  
+                    throw new ArgumentException("element");  
                 if(_index<_elements)
                     yield return element;
             }
         }
         public static IEnumerable<TSource> Top<TSource>(this IEnumerable<TSource> source, int percentoflist, Func<TSource, int> selector)
         {
-            var _orderedsource = source.OrderByDescending(selector);
-            var _sourceelements = _orderedsource.Select(selector).ToList();
-            int _count = source.Count();
-            int _index = -1;
-            int _elements = _count * percentoflist % 100 != 0 ? _count * percentoflist / 100 + 1 : _count * percentoflist / 100;
-            foreach (var element in _orderedsource)
-            {
-                _index++;
-                if (_sourceelements[_index] < 0 || _sourceelements[_index] > 100)
-                    throw new ArgumentException();
-                if (_index < _elements)
-                    yield return element;
-            }
+                if (source == null) throw new ArgumentNullException("source");
+                if (selector == null) throw new ArgumentNullException("selector");
+                var _orderedsource = source.OrderByDescending(selector);
+                var _sourceelements = _orderedsource.Select(selector).ToList();
+                int _count = source.Count();
+                int _index = -1;
+                int _elements = _count * percentoflist % 100 != 0 ? _count * percentoflist / 100 + 1 : _count * percentoflist / 100;
+                foreach (var element in _orderedsource)
+                {
+                    _index++;
+                    if (_sourceelements[_index] < 0 || _sourceelements[_index] > 100)
+                        throw new ArgumentException("Age");
+                        if (_index < _elements)
+                            yield return element;
+                }
+           
         }
     }
 }
