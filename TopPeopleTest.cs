@@ -23,6 +23,7 @@ namespace Class40
             try
             {
                 Console.WriteLine("Вывод элементов коллекции типа Person");
+                if (count <= 0) throw new ArgumentException("количество элементов должно быть больше нуля");
                 Person[] people = new Person[count];     //создание коллекции элементов типа Person
                 for (int i = 0; i < people.Length; i++)  //наполнение коллекции элементов с случайными значениями свойств
                 {

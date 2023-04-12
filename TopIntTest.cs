@@ -23,6 +23,7 @@ namespace Class40
             try
             {
                 Console.WriteLine("Вывод элементов коллекции типа int");
+                if(count<=0) throw new ArgumentException("количество элементов должно быть больше нуля");   
                 int[] _ints = new int[count];   //создание коллекции элементов типа int
                 for (int i = 0; i < _ints.Length; i++) //наполнение коллекции элементов с случайными значениями свойств
                 {
