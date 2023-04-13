@@ -29,13 +29,13 @@ namespace Class40
                 throw new ArgumentNullException("source");
             var _orderedsource = source.OrderByDescending(x => x); //Сортировка элементов коллекции в порядке убывания
             int _count = source.Count();  //Количество элементов коллекции
+            if(_orderedsource.First()>100||_orderedsource.Last()<1) //проверка значения элементов коллекции на вхождение в заданный диапазон
+                throw new ArgumentException($"Ваше значение: {source}, диапазон значений должен быть от 1 до 100");
             int _index = -1; //счетчик элеметов коллекции
             int _elements = _count * percentoflist % 100 != 0 ? _count * percentoflist / 100 + 1 : _count * percentoflist / 100; //вычисление количества элементов для возврата
             foreach (int element in _orderedsource)
             {
-                _index++;
-                if (element < 0 || element > 100) //проверка значения элементов коллекции на вхождение в заданный диапазон
-                    throw new ArgumentException($"Ваше значение: {element}, диапазон значений должен быть от 0 до 100"); 
+                _index++; 
                 if (_index < _elements)
                     yield return element;  
             }
@@ -70,17 +70,16 @@ namespace Class40
                 if (ex is ArgumentException) Console.WriteLine(ex.Message);
                 if (ex is InvalidOperationException) Console.WriteLine("Элементы вашей коллекции не содержат свойств");
             }
-
             var _orderedsource = source.OrderByDescending(selector);  //Сортировка элементов коллекции в порядке убывания по заданному свойству
             var _sourceelements = _orderedsource.Select(selector).ToList();
+            if(_sourceelements.First()>100||_sourceelements.Last()<1)  //проверка значения элементов коллекции на вхождение в заданный диапазон
+                throw new ArgumentException($"Значение свойства {source} - вне диапазона от 1 до 100");
             int _count = source.Count();  //Количество элементов коллекции
             int _index = -1;  //счетчик элеметов коллекции
             int _elements = _count * percentoflist % 100 != 0 ? _count * percentoflist / 100 + 1 : _count * percentoflist / 100;  //вычисление количества элементов для возврата
             foreach (var element in _orderedsource)
             {
                 _index++;
-                if (_sourceelements[_index] < 0 || _sourceelements[_index] > 100)  //проверка значения элементов коллекции на вхождение в заданный диапазон
-                    throw new ArgumentException($"Значение свойства {_sourceelements[_index]} - вне диапазона от 0 до 100");
                 if (_index < _elements)
                     yield return element;
             }
