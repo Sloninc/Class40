@@ -12,7 +12,7 @@ namespace Class40
     public class TopIntTest
     {
         /// <summary>
-        /// Метод генерирует коллекцию элементов тип Person, вызывает метод Top и выводит результат на консоль
+        /// Метод генерирует коллекцию элементов int, вызывает метод Top и выводит результат на консоль
         /// </summary>
         /// <param name="count">задает количество элементов коллекции</param>
         /// <param name="percent">задает количество процентов</param>
@@ -23,7 +23,8 @@ namespace Class40
             try
             {
                 Console.WriteLine("Вывод элементов коллекции типа int");
-                if(count<=0) throw new ArgumentException("количество элементов должно быть больше нуля");   
+                if(count<=0) throw new ArgumentException("количество элементов должно быть больше нуля");
+                if (max <= min) throw new ArgumentException("аргумент max должен быть болше аргумента min");
                 int[] _ints = new int[count];   //создание коллекции элементов типа int
                 for (int i = 0; i < _ints.Length; i++) //наполнение коллекции элементов с случайными значениями свойств
                 {
