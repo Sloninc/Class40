@@ -23,12 +23,14 @@ namespace Class40
             try
             {
                 Console.WriteLine("Вывод элементов коллекции типа Person");
-                if (count <= 0) throw new ArgumentException("количество элементов должно быть больше нуля");
-                if (max <= min) throw new ArgumentException("аргумент max должен быть болше аргумента min");
+                if (count <= 0) 
+                    throw new ArgumentException("количество элементов должно быть больше нуля");
+                if (max <= min) 
+                    throw new ArgumentException("аргумент max должен быть болше аргумента min");
                 Person[] people = new Person[count];     //создание коллекции элементов типа Person
                 for (int i = 0; i < people.Length; i++)  //наполнение коллекции элементов с случайными значениями свойств
                 {
-                    people[i] = new Person() { Age = new Random().Next(min, max) };
+                    people[i] = new Person() {  Age = new Random().Next(min, max) };
                 }
                 var peoples = people.Top(percent, x => x.Age);  //вызов метода Top
 

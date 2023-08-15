@@ -15,5 +15,6 @@ namespace Class40
         /// Свойство типа int для коллекции элементов
         /// </summary>
         public int Age { get; set; }
+       
     }
 }

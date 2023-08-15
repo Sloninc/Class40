@@ -23,20 +23,18 @@ namespace Class40
         /// <exception cref="ArgumentNullException"></exception>
         public static IEnumerable<int> Top(this IEnumerable<int> source, int percentoflist)
         {
-            if (percentoflist < 0 || percentoflist > 100) //Проверка входного параметра процентов
+            if (percentoflist is < 0 or > 100) //Проверка входного параметра процентов
                 throw new ArgumentException("Значение процентов задаются в диапазоне от 0 до 100"); 
             if (source == null) 
                 throw new ArgumentNullException("source");
-            var _orderedsource = source.OrderByDescending(x => x); //Сортировка элементов коллекции в порядке убывания
-            int _count = source.Count();  //Количество элементов коллекции
-            if(_orderedsource.First()>100||_orderedsource.Last()<1) //проверка значения элементов коллекции на вхождение в заданный диапазон
-                throw new ArgumentException($"Ваше значение: {source}, диапазон значений должен быть от 1 до 100");
-            int _index = -1; //счетчик элеметов коллекции
-            int _elements = _count * percentoflist % 100 != 0 ? _count * percentoflist / 100 + 1 : _count * percentoflist / 100; //вычисление количества элементов для возврата
-            foreach (int element in _orderedsource)
+            var orderedSource = source.OrderByDescending(x => x); //Сортировка элементов коллекции в порядке убывания
+            int count = source.Count();  //Количество элементов коллекции
+            int index = -1; //счетчик элеметов коллекции
+            int elements = count * percentoflist % 100 != 0 ? count * percentoflist / 100 + 1 : count * percentoflist / 100; //вычисление количества элементов для возврата
+            foreach (int element in orderedSource)
             {
-                _index++; 
-                if (_index < _elements)
+                index++; 
+                if (index < elements)
                     yield return element;  
             }
         }
@@ -56,31 +54,21 @@ namespace Class40
         /// <exception cref="ArgumentNullException"></exception>
         public static IEnumerable<TSource> Top<TSource>(this IEnumerable<TSource> source, int percentoflist, Func<TSource, int> selector)
         {
-            if (percentoflist < 0 || percentoflist > 100) //Проверка входного параметра процентов
+            if (percentoflist is < 0 or > 100) //Проверка входного параметра процентов
                 throw new ArgumentException("Значение процентов задаются в диапазоне от 0 до 100"); 
-            if (source == null) throw new ArgumentNullException("source");
-            if (selector == null) throw new ArgumentNullException("selector");
-            try
+            if (source == null) 
+                throw new ArgumentNullException("source");
+            if (selector == null) 
+                throw new ArgumentNullException("selector");
+            var orderedSource = source.OrderByDescending(selector);  //Сортировка элементов коллекции в порядке убывания по заданному свойству
+            var sourceElements = orderedSource.Select(selector).ToList();
+            int count = source.Count();  //Количество элементов коллекции
+            int index = -1;  //счетчик элеметов коллекции
+            int elements = count * percentoflist % 100 != 0 ? count * percentoflist / 100 + 1 : count * percentoflist / 100;  //вычисление количества элементов для возврата
+            foreach (var element in orderedSource)
             {
-                var b = typeof(TSource).GetProperties().First().PropertyType == typeof(int); //проверка элементов коллекции - содержат ли они свойство
-                if (!b) throw new ArgumentException("Коллекция должна состоять из элементов со свойством типа int");  //проверка элементов коллекции - содержат ли они свойство типа int
-            }
-            catch (Exception ex)
-            {
-                if (ex is ArgumentException) Console.WriteLine(ex.Message);
-                if (ex is InvalidOperationException) Console.WriteLine("Элементы вашей коллекции не содержат свойств");
-            }
-            var _orderedsource = source.OrderByDescending(selector);  //Сортировка элементов коллекции в порядке убывания по заданному свойству
-            var _sourceelements = _orderedsource.Select(selector).ToList();
-            if(_sourceelements.First()>100||_sourceelements.Last()<1)  //проверка значения элементов коллекции на вхождение в заданный диапазон
-                throw new ArgumentException($"Значение свойства {source} - вне диапазона от 1 до 100");
-            int _count = source.Count();  //Количество элементов коллекции
-            int _index = -1;  //счетчик элеметов коллекции
-            int _elements = _count * percentoflist % 100 != 0 ? _count * percentoflist / 100 + 1 : _count * percentoflist / 100;  //вычисление количества элементов для возврата
-            foreach (var element in _orderedsource)
-            {
-                _index++;
-                if (_index < _elements)
+                index++;
+                if (index < elements)
                     yield return element;
             }
 
